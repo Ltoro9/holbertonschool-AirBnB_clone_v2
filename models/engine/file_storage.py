@@ -21,8 +21,8 @@ class FileStorage:
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
+            for key, value in temp.items():
+                temp[key] = value.to_dict()
             json.dump(temp, f)
 
     def reload(self):
@@ -36,15 +36,19 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel,
+            'User': User,
+            'Place': Place,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Review': Review
+            }
         try:
-            temp = {}
+            data = {}
             with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                data = json.load(f)
+                for key, value in data.items():
+                        self.all()[key] = classes[value['__class__']](**value)
         except FileNotFoundError:
             pass
