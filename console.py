@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """ Create an object of any class"""
-        args = shlex.split(arg)
+        args = arg.partition(" ")
         if not args:
             print("** class name missing **")
             return
@@ -133,17 +133,20 @@ class HBNBCommand(cmd.Cmd):
             return
 
         new_instance = HBNBCommand.classes[class_name]()
-        parameters = args[1:]
+        parameters = args[2]
+        parameters = parameters.split(" ")[:]
         obj_id = new_instance.id
         for par in parameters:
-            att_name, att_value = par.split("=")
+            att_name = par.partition("=")[0]
+            att_value = par.partition("=")[2]
 
-            # remove double quote if exist
-            if att_value.startswith('"') and att_value.endswith('"'):
-                att_value = att_value[1:-1]
-            att_value = att_value.replace('_', ' ')
-            args_update = " ".join([class_name, obj_id, att_name, att_value])
-            self.do_update(args_update)
+            if att_value:
+                # remove double quote if exist
+                if att_value.startswith('"') and att_value.endswith('"'):
+                    args_update = att_value[1:-1]
+                att_value = att_value.replace('_', ' ')
+                args_update = " ".join([class_name, obj_id, att_name, att_value])
+                self.do_update(args_update)
 
         storage.save()
         print(new_instance.id)
