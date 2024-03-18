@@ -3,27 +3,26 @@
 from models.base_model import BaseModel
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
-import models
-import shlex
-
+from models.city import City
+from os import getenv
 
 class State(BaseModel):
     """ State class """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
-    cities = relationship("City", backref="State", cascade="all, delete")
 
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    cities = relationship('City', backref='State', cascade='all, delete')
+else:
+    
     @property
     def cities(self):
-        var = models.storage.all()
-        lista = []
-        result = []
-        for key in var:
-            city = key.replace('.', ' ')
-            city = shlex.split(city)
-            if (city[0] == 'City'):
-                lista.append(var[key])
-        for elem in lista:
-            if (elem.state_id == self.id):
-                result.append(elem)
-        return (result)
+        """
+        Getter for cities related to a state using a FIlEStorage engine
+        """
+        from models import storage
+        st_cities = []
+        for city in storage.all(City).values():
+            if (self.id == city.state_id):
+                st_cities.append(city)
+        return st_cities
