@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -214,6 +215,18 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
         except KeyError:
             print("** no instance found **")
+
+    def main():
+        if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+            print("Error: HBNB_TYPE_STORAGE is not set to 'db'")
+            return
+        if not isinstance(storage, DBStorage):
+            print("Error: storage is not configured to use DBStorage")
+
+        HBNBCommand().cmdloop()
+    
+    if __name__ == "__main__":
+        main()
 
     def help_destroy(self):
         """ Help information for the destroy command """

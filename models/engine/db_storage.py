@@ -23,36 +23,33 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        user = getenv("HBNB_MYSQL_USER")
-        passwd = getenv("HBNB_MYSQL_PWD")
-        host = getenv("HBNB_MYSQL_HOST")
-        database = ("HBNB_MYSQL_DB")
+        user = os.getenv("HBNB_MYSQL_USER")
+        passwd = os.getenv("HBNB_MYSQL_PWD")
+        host = os.getenv("HBNB_MYSQL_HOST")
+        database = os.getenv("HBNB_MYSQL_DB")
         env = ("HBNB_ENV")
 
         self.__engine = create_engine(f"mysql+mysqldb://\
                                     {user}:{passwd}@{host}/{database}",
                                     pool_pre_ping=True)
 
-        if env == "test":
-            Base.metadata.dropall(self.__engine)
+        if os.getenv("HBNB_ENV") == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        from models import base_model
         # self.__session()
 
-        obj_dict = {}
+        session = self.__session
         if cls:
-            query = self.__session.query(cls).all()
-            for obj in query:
-                key = "{}.{}".format(type(obj).__name__, obj.id)
-                obj_dict[key] = obj
+            return session.query(cls).all()
         else:
-            for table in [User, State, City, Amenity, Place, Review]:
-                query = self.__session.query(table).all()
-                for obj in query:
-                    key = "{}.{}".format(type(obj).__name__, obj.id)
-                    obj_dict[key] = obj
-
-        return obj_dict
+            classes = [getattr(base_model, c) for c in dir(base_model)
+                       is isinstance(getattr(base_model, c), type)]
+        objects = {}
+        for cls in classes:
+            objects.extend(session.query(cls).all())
+        return objects
 
     def new(self, obj):
         self.__session.add(obj)
