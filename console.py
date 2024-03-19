@@ -238,13 +238,11 @@ class HBNBCommand(cmd.Cmd):
                 return
 
             # Retrieve objects from the database using DBStorage
-            objects = storage.all(HBNBCommand.classes[args])
-            for obj in objects.values():
+            for obj in storage.all(self.classes[args]).values():
                 list_to_print.append(str(obj))
         else:
             # Retrieve all objects from the database using DBStorage
-            objects = storage.all()
-            for obj in objects.values():
+            for obj in storage.all().values():
                 list_to_print.append(str(obj))
 
         print(list_to_print)
