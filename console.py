@@ -3,6 +3,7 @@
 import cmd
 import sys
 import shlex
+import uuid
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -134,10 +135,11 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[class_name]()
+        kwargs = {}
         parameters = args[2]
         parameters = parameters.split(" ")[:]
-        obj_id = new_instance.id
+        id = str(uuid.uuid4())
+        kwargs['id'] = id
         for par in parameters:
             att_name = par.partition("=")[0]
             att_value = par.partition("=")[2]
@@ -145,10 +147,12 @@ class HBNBCommand(cmd.Cmd):
             if att_value:
                 # remove double quote if exist
                 if att_value.startswith('"') and att_value.endswith('"'):
-                    args_update = att_value[1:-1]
+                    att_value = att_value[1:-1]
+                    att_value = str(att_value)
                 att_value = att_value.replace('_', ' ')
-                args_update = " ".join([class_name, obj_id, att_name, att_value])
-                self.do_update(args_update)
+                kwargs[att_name] = att_value
+        new_instance = HBNBCommand.classes[class_name](**kwargs)
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
@@ -218,17 +222,17 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def main():
-        if getenv('HBNB_TYPE_STORAGE') != 'db':
-            print("Error: HBNB_TYPE_STORAGE is not set to 'db'")
-            return
-        if not isinstance(storage, DBStorage):
-            print("Error: storage is not configured to use DBStorage")
+    # def main():
+    #     if getenv('HBNB_TYPE_STORAGE') != 'db':
+    #         print("Error: HBNB_TYPE_STORAGE is not set to 'db'")
+    #         return
+    #     if not isinstance(storage, DBStorage):
+    #         print("Error: storage is not configured to use DBStorage")
 
-        HBNBCommand().cmdloop()
+    #     HBNBCommand().cmdloop()
     
-    if __name__ == "__main__":
-        main()
+    # if __name__ == "__main__":
+    #     main()
 
     def help_destroy(self):
         """ Help information for the destroy command """
@@ -237,21 +241,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        list_to_print = []
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for key, value in storage._FileStorage__objects.items():
-                if key.split('.')[0] == args:
-                    print_list.append(str(value))
-        else:
-            for key, value in storage._FileStorage__objects.items():
-                print_list.append(str(value))
 
-        print(print_list)
+            # Retrieve objects from the database using DBStorage
+            objects = storage.all(HBNBCommand.classes[args])
+            for obj in objects.values():
+                list_to_print.append(str(obj))
+        else:
+            # Retrieve all objects from the database using DBStorage
+            objects = storage.all()
+            for obj in objects.values():
+                list_to_print.append(str(obj))
+
+        print(list_to_print)
 
     def help_all(self):
         """ Help information for the all command """
