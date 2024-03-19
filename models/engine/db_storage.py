@@ -45,8 +45,8 @@ class DBStorage:
             return session.query(cls).all()
         else:
             classes = [getattr(base_model, c) for c in dir(base_model)
-                       is isinstance(getattr(base_model, c), type)]
-        objects = {}
+                       if isinstance(getattr(base_model, c), type)]
+        objects = []
         for cls in classes:
             objects.extend(session.query(cls).all())
         return objects

@@ -12,6 +12,8 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from models import storage
+from os import getenv
+from models.engine.db_storage import DBStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -217,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def main():
-        if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+        if getenv('HBNB_TYPE_STORAGE') != 'db':
             print("Error: HBNB_TYPE_STORAGE is not set to 'db'")
             return
         if not isinstance(storage, DBStorage):
