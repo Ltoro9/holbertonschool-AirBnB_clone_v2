@@ -39,19 +39,20 @@ class DBStorage:
     def all(self, cls=None):
         # self.__session()
 
-        obj_dictionary = {}
-        if not cls:
-            cls_list = [User, State, City, Amenity, Place, Review]
-            query_list = []
-            for cls_name in cls_list:
-                query_list.extend(self.__session.query(cls_name).all())
+        obj_dict = {}
+        if cls:
+            query = self.__session.query(cls).all()
+            for obj in query:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                obj_dict[key] = obj
         else:
-            query_list = self.__session.query(cls).all()
-            for obj in query_list:
-                key = f"{obj.__class__.__name__}.{obj.id}"
-                obj_dictionary[key] = obj
+            for table in [User, State, City, Amenity, Place, Review]:
+                query = self.__session.query(table).all()
+                for obj in query:
+                    key = "{}.{}".format(type(obj).__name__, obj.id)
+                    obj_dict[key] = obj
 
-        return (obj_dictionary)
+        return obj_dict
 
     def new(self, obj):
         self.__session.add(obj)
@@ -65,8 +66,8 @@ class DBStorage:
 
     def reload(self):
         Base.metadata.create_all(self.__engine)
-        sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(sec)
+        Session = scoped_session(sessionmaker(bind=self.__engine,
+                                              expire_on_commit=False))
         self.__session = Session()
 
     def close(self):
