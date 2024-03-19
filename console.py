@@ -222,18 +222,6 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    # def main():
-    #     if getenv('HBNB_TYPE_STORAGE') != 'db':
-    #         print("Error: HBNB_TYPE_STORAGE is not set to 'db'")
-    #         return
-    #     if not isinstance(storage, DBStorage):
-    #         print("Error: storage is not configured to use DBStorage")
-
-    #     HBNBCommand().cmdloop()
-    
-    # if __name__ == "__main__":
-    #     main()
-
     def help_destroy(self):
         """ Help information for the destroy command """
         print("Destroys an individual instance of a class")
