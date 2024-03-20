@@ -232,7 +232,7 @@ class HBNBCommand(cmd.Cmd):
         list_to_print = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
