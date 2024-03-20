@@ -29,7 +29,7 @@ class DBStorage:
         host = getenv("HBNB_MYSQL_HOST")
         database = getenv("HBNB_MYSQL_DB")
         env = getenv("HBNB_ENV")
-        print(user, passwd, host, database, env)
+        # print(user, passwd, host, database, env)
 
         self.__engine = create_engine(
             f"mysql+mysqldb://{user}:{passwd}@{host}/{database}",
