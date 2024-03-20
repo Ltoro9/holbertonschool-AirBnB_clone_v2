@@ -1,15 +1,18 @@
 #!/usr/bin/python3
-"""comment"""
+""" User Module for HBNB project """
+
+from sqlalchemy import Column, String
+from models.base_model import BaseModel, Base
 
 
-from models.base_model import BaseModel
-
-
-class User(BaseModel):
+class User(BaseModel, Base):
     '''
-        User class
+    User class
     '''
-    email = ""
-    password = ""
-    first_name = ""
-    last_name = ""
+
+    __tablename__ = 'users'
+
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)
