@@ -2,14 +2,14 @@
 """comment"""
 
 
-ffrom sqlalchemy import Column, String
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
 class User(BaseModel, Base):
-    '''
-        User class
-    '''
+    """
+    User class
+    """
     __tablename__ = 'users'
 
     email = Column(String(128), nullable=False)
@@ -17,5 +17,5 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
 
-    # Define relationship with Place
-    places = relationship("Place", cascade="all, delete", back_populates="user")
+    # Define relationship with Review
+    reviews = relationship("Review", cascade="all, delete", back_populates="user")
