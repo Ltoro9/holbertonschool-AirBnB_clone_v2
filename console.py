@@ -144,12 +144,12 @@ class HBNBCommand(cmd.Cmd):
             att_name = par.partition("=")[0]
             att_value = par.partition("=")[2]
 
+            att_value = att_value.replace('_', ' ')
             if att_value:
                 # remove double quote if exist
                 if att_value.startswith('"') and att_value.endswith('"'):
                     att_value = att_value[1:-1]
                     att_value = str(att_value)
-                att_value = att_value.replace('_', ' ')
                 kwargs[att_name] = att_value
         new_instance = HBNBCommand.classes[class_name](**kwargs)
         storage.new(new_instance)
@@ -238,11 +238,13 @@ class HBNBCommand(cmd.Cmd):
                 return
 
             # Retrieve objects from the database using DBStorage
-            for obj in storage.all(self.classes[args]).values():
+            objects = storage.all(HBNBCommand.classes[args])
+            for obj in objects.values():
                 list_to_print.append(str(obj))
         else:
             # Retrieve all objects from the database using DBStorage
-            for obj in storage.all().values():
+            objects = storage.all()
+            for obj in objects.values():
                 list_to_print.append(str(obj))
 
         print(list_to_print)
