@@ -2,7 +2,8 @@
 """comment"""
 
 
-from sqlalchemy import Column, String
+ffrom sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
 class User(BaseModel, Base):
@@ -15,3 +16,6 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
+
+    # Define relationship with Place
+    places = relationship("Place", cascade="all, delete", back_populates="user")
