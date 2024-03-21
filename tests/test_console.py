@@ -2,14 +2,9 @@
 """Unit tests for the HBNB console"""
 
 import unittest
-import os
-import sys
 from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
-from models.base_model import BaseModel
-from models import storage
-
 
 class TestConsole(unittest.TestCase):
     """Test cases for the HBNB console"""
@@ -59,6 +54,12 @@ class TestConsole(unittest.TestCase):
     #                ('create BaseModel\nupdate BaseModel 1 name "test"\n')):
     #         HBNBCommand().cmdloop()
     #         self.assertEqual("(hbnb) ", mock_stdout.getvalue())
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_do_EOF(self, mock_stdout):
+        """Test the EOF command"""
+        console = HBNBCommand()
+        self.assertTrue(console.do_EOF(''))
 
 
 if __name__ == '__main__':
