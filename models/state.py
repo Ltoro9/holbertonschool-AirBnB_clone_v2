@@ -15,7 +15,7 @@ class State(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.save()
+        # self.save()
     
     @property
     def cities(self):
