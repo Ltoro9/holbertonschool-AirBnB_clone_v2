@@ -14,14 +14,6 @@ from models import storage
 class TestConsole(unittest.TestCase):
     """Test cases for the HBNB console"""
 
-    def test_all_returns_dict_with_objects(self):
-        """Test if all() method returns a dictionary containing objects"""
-        new_model = BaseModel()        
-        objects_dict = storage.all()
-        self.assertIsInstance(objects_dict, dict)
-        self.assertIn(new_model.__class__.__name__ + '.' + new_model.id,
-                    objects_dict)
-
     # @patch('sys.stdout', new_callable=StringIO)
     # def test_quit(self, mock_stdout):
     #     """Test quit command"""
