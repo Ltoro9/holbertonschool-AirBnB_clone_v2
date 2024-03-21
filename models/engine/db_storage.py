@@ -14,6 +14,7 @@ from models.city import City
 from models.user import User
 from models.place import Place
 from models.review import Review
+from models.amenity import Amenity
 
 
 
@@ -51,7 +52,7 @@ class DBStorage:
                 key = f"{type(obj).__name__}.{obj.id}"
                 obj_dict[key] = obj
         else:
-            classes = [User, State, City, Place, Review]
+            classes = [User, State, City, Place, Review, Amenity]
             for cls in classes:
                 query = self.__session.query(cls)
                 for obj in query:
