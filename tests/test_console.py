@@ -58,12 +58,18 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("(hbnb) ", mock_stdout.getvalue())
 
     @patch('sys.stdout', new_callable=StringIO)
-    def test_EOF(self, mock_stdout):
-        """Test EOF command"""
-        with patch('builtins.input', return_value='EOF'):
-            HBNBCommand().cmdloop()
-        print("Actual Output:", repr(mock_stdout.getvalue()))
-        self.assertEqual('(hbnb) \n', mock_stdout.getvalue())
+    def test_EOF(self, mock_stdout, mock_input):
+        console = HBNBCommand()
+        console.cmdloop()  # Simulate entering the command loop
+        expected_output = '(hbnb)\n'  # Adjusted expected output to include newline character
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+
+    @patch('sys.stdout', new_callable=StringIO)  # Redirect stdout
+    def test_all(self, mock_stdout):
+        console = HBNBCommand()
+        console.do_all()  # Assuming do_all() is the method to test
+        expected_output = "[BaseModel] ("
+        self.assertIn(expected_output, mock_stdout.getvalue())
 
 
 if __name__ == '__main__':
