@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id', String(60), ForeignKey('place.id'), primary_key=True),
-                      Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True)
-                      )
 
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
+
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -23,8 +19,11 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    user = relationship("User", back_populates="places")
+    # Define Many-To-Many relationship with Amenity using association table
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
 
-    reviews = relationship("Review", backref="place", cascade="delete")
-
-    amenities = relationship("Amenity", secondary=place_amenity, viewonly=False)
+# Define association table for Many-To-Many relationship
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'), primary_key=True),
+                      Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True)
+                      )
