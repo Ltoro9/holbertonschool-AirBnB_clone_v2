@@ -44,7 +44,7 @@ class TestConsole(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_all(self, mock_stdout):
         """Test all command"""
-        with patch('sys.stdin', StringIO('all\n')):
+        with patch('builtins.input', side_effect=['all', 'EOF']):
             HBNBCommand().cmdloop()
             self.assertEqual("['[BaseModel] (", mock_stdout.getvalue()[:19])
 
@@ -59,7 +59,7 @@ class TestConsole(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_EOF(self, mock_stdout):
         """Test EOF command"""
-        with patch('sys.stdin', StringIO('EOF\n')):
+        with patch('builtins.input', return_value='EOF'):
             HBNBCommand().cmdloop()
             self.assertEqual('', mock_stdout.getvalue())
 
