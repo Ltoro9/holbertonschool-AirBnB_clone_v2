@@ -20,6 +20,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+        self.created_at = datetime.utcnow()
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__class__':
