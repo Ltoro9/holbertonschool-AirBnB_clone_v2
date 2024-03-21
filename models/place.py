@@ -4,6 +4,10 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('place.id'), primary_key=True),
+                      Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True)
+                      )
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -19,4 +23,8 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
+    user = relationship("User", back_populates="places")
+
     reviews = relationship("Review", backref="place", cascade="delete")
+
+    amenities = relationship("Amenity", secondary=place_amenity, viewonly=False)
