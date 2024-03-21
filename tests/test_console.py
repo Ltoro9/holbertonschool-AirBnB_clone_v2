@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """Unit tests for the HBNB console"""
 
+
 import unittest
 from io import StringIO
 from unittest.mock import patch
 from console import HBNBCommand
+
 
 class TestConsole(unittest.TestCase):
     """Test cases for the HBNB console"""
