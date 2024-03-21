@@ -19,7 +19,8 @@ class TestConsole(unittest.TestCase):
         new_model = BaseModel()        
         objects_dict = storage.all()
         self.assertIsInstance(objects_dict, dict)
-        self.assertIn(new_model.__class__.__name__ + '.' + new_model.id, objects_dict)
+        self.assertIn(new_model.__class__.__name__ + '.' + new_model.id,
+                    objects_dict)
 
     # @patch('sys.stdout', new_callable=StringIO)
     # def test_quit(self, mock_stdout):
