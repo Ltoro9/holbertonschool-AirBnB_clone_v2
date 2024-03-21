@@ -8,6 +8,7 @@ from models.amenity import Amenity
 from models.review import Review
 import models
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
@@ -28,11 +29,12 @@ class Place(BaseModel, Base):
 
     # Define association table for Many-To-Many relationship
     place_amenity = Table('place_amenity', Base.metadata,
-                        Column('place_id', String(60), ForeignKey('places.id'),
-                                primary_key=True, nullable=False),
-                        Column('amenity_id', String(60),
-                               ForeignKey('amenities.id'),
-                                primary_key=True, nullable=False))
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
 
     amenity_ids = []
 
