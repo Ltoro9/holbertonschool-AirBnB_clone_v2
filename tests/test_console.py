@@ -28,14 +28,16 @@ class TestConsole(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_show(self, mock_stdout):
         """Test show command"""
-        with patch('sys.stdin', StringIO('create BaseModel\nshow BaseModel\n')):
+        with patch('sys.stdin',
+                   StringIO('create BaseModel\nshow BaseModel\n')):
             HBNBCommand().cmdloop()
             self.assertIn("[BaseModel]", mock_stdout.getvalue())
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_destroy(self, mock_stdout):
         """Test destroy command"""
-        with patch('sys.stdin', StringIO('create BaseModel\ndestroy BaseModel\n')):
+        with patch('sys.stdin',
+                   StringIO('create BaseModel\ndestroy BaseModel\n')):
             HBNBCommand().cmdloop()
             self.assertEqual("(hbnb) ", mock_stdout.getvalue())
 
@@ -49,7 +51,8 @@ class TestConsole(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     def test_update(self, mock_stdout):
         """Test update command"""
-        with patch('sys.stdin', StringIO('create BaseModel\nupdate BaseModel 1 name "test"\n')):
+        with patch('sys.stdin', StringIO
+                   ('create BaseModel\nupdate BaseModel 1 name "test"\n')):
             HBNBCommand().cmdloop()
             self.assertEqual("(hbnb) ", mock_stdout.getvalue())
 
