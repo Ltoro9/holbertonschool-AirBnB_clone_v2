@@ -15,7 +15,8 @@ def hello():
     """
         print hello in flask web app
     """
-    return(f"Hello HBNB!")
+    return (f"Hello HBNB!")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
