@@ -5,10 +5,10 @@
 
 
 from flask import Flask, render_template
-import sys
-sys.path.append("/home/louistoro/holbertonschool-AirBnB_clone_v2")
 from models import storage
 from models.state import State
+import sys
+sys.path.append("/home/louistoro/holbertonschool-AirBnB_clone_v2")
 
 
 app = Flask(__name__)
