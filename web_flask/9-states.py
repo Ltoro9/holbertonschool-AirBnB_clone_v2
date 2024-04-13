@@ -92,20 +92,20 @@ def cities_on_states():
     return render_template("8-cities_by_states.html", states=sorted_states)
 
 
-@app.route("/states", strict_slashes=False)
-@app.route("/states/<id>", strict_slashes=False)
-def final_boss(id=None):
-    """
-        print states, states/cities
-    """
+@app.route('/states', strict_slashes=False)
+@app.route('/states/<id>', strict_slashes=False)
+def find_state(id=None):
+    '''
+        Display states  or state and cities
+    '''
     states = storage.all(State).values()
-    if id is None:
-        return render_template("9-states.html", states=states)
-    else:
+    if id:
         for state in states:
             if state.id == id:
-                return render_template("9-states.html", state=state)
-        return render_template("9-states.html")
+                return render_template('9-states.html', state=state)
+        return render_template('9-states.html')
+    else:
+        return render_template('9-states.html', states=states)
 
 
 @app.teardown_appcontext
