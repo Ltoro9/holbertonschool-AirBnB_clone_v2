@@ -7,10 +7,12 @@
     <h1>States</h1>
     <ul>
         {% for state in states %}
-        <li>{{ state.id }}: <b>{{ state.name }}</b></li>
+        <li>{{ state.id }}: <b>{{ state.name | e }}</b></li>
         <ul>
-            {% for city in state.cities %}
-            <li>{{ city.id }}: <b>{{ city.name }}</b></li>
+            {% for city in state.cities|sort(attribute='name') %}
+            <li>{{ city.id }}: <b>{{ city.name | e }}</b></li>
+            {% else %}
+            <li>No cities found for this state.</li>
             {% endfor %}
         </ul>
         {% endfor %}
