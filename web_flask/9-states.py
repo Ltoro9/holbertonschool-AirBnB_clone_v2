@@ -105,11 +105,14 @@ def final_boss(id=None):
         for state in states:
             if state.id == id:
                 return render_template("9-states.html", state=state)
-        return render_template("9-states.html", state=None)
+        return render_template("9-states.html")
 
 
 @app.teardown_appcontext
-def teardown(exception):
+def teardown_db(exception=None):
+    """
+    Remove the current SQLAlchemy Session after each request
+    """
     storage.close()
 
 
